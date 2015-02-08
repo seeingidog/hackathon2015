@@ -1,18 +1,19 @@
-if (localStorage.accessToken) {
-    var graphUrl = 'https://graph.facebook.com/me?' + localStorage.accessToken + '&callback=displayUser';
-    console.log(graphUrl);
-    
-    var script = document.createElement('script');
-    script.src = graphUrl;
-    document.body.appendChild(script);
-    
-    function displayUser(user) {
-        console.log(user);
-    }
+function initIframe() {
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function(tabs) {
+        var expiry = new Date(parseInt(localStorage.expiryTime));
+        var now = new Date();
+        if (localStorage.accessToken && now < expiry) {
+            console.log(localStorage.accessToken);
+        } else {
+            $('#iframe').hide();
+            loginfacebook(initIframe);
+        }
+    });
 }
 
-$("body").on('click', '#cleartoken', function(event) {
-    event.preventDefault();
-    localStorage.accessToken = null;
-    alert("Token Cleared");
+document.addEventListener('DOMContentLoaded', function() {
+    initIframe();
 });

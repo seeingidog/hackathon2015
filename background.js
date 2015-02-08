@@ -19,20 +19,3 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 var successURL = 'http://www.wizkidweb.com';
-var onFacebookLogin = function() {
-    if (!localStorage.accessToken) {
-        chrome.tabs.getCurrent(function(c) {
-            console.log(c);
-            if (c.url.indexOf(successURL)) {
-                alert("Is Success URL");
-                var access = c.url.split('?')[1];
-                alert(access);
-                localStorage.accessToken = access;
-                chrome.tabs.onUpdated.removeListener(onFacebookLogin);
-                return;
-            }
-        });
-    }
-}
-
-chrome.tabs.onUpdated.addListener(onFacebookLogin);

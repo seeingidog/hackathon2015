@@ -22,13 +22,11 @@
             "js": ["jquery.js", "moodring.js"]
         }
     ],
-    
+        
     "permissions": [
         "declarativeContent",
         "tabs",
-        "identity",
-        "*://*.facebook.com/*",
-        "https://facebook.com/connect/*"
+        "identity"
     ],
     
     "icons" : {
