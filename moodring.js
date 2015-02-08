@@ -1,152 +1,82 @@
-// Mood Ring Code
+$(document).ready(function() {
+	var userData = [
+		{ 	//Adi
+			'id': '10202213762645938',
+			'statuses': [ "I love to eat Indian food and code for hours.", 
+			"I hate it if I eat too much because then I would want to go to sleep.",
+			"Hackathon 2005 time, woohoo!"]
+		},
+		{ 
+			//Channing
+			'id': '100009087614394', 
+			'statuses': [ "Hacking on the new HP IDOL API's, and I have to say they are just incredible beyond belief. Can't stop taking photos of my 6 pack with their image recognition app to find easter eggs. I'm having so much fun, my life is so awesome right now!",
+			 "Discovered that catnip is not just for cats. Sprinkled a bit on my counter and felt absolutely giddy and wonderful. Started dancing and gyrating around my mansion. Can life get any more amazing??",
+			 "Just scored 2 hot dogs for the price of 1 at 7eleven. I feel great. What a beautiful and bountiful world we all live in. As a wise man once said, I'm loving it!" ]
+		},
+		{ 
+			//Scarlett
+			'id': '100009027256958',
+			'statuses': [ "Stood up for the hundredth time. Guess I'm gonna be alone forever. I'm so lonely. Sure could use a cute geek to cuddle up with right now. Preferably one with at least 15+ years of NoSQL and Node.js experience. I pretty much hate everything right now.",
+			"So apparently there are health and safety laws against filling your pool with champagne. Health Inspector totally screwed me over today. I'm just so depressed and angry over this. So pissed off!",
+			"Being beautiful is hard work, guys! Had the worst, most terrible day sorting through hundred of Tinder requests today. FML." ]
+		}
+		
+	];
 
-var accesstoken;
-var refresh_interval = 5000; 
+	var API_KEY = 'dcabc379-7d01-4357-bc05-3365882df4ba';
+	var endPoint = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1';
 
-var refresh = setInterval(runMoodRing, refresh_interval);
+	function getSentiment(users,callback) {
+	    users.forEach(function(user, index, users) {
+	        var statuses = user.statuses.join(' ')
 
-function runMoodRing() {
-    console.log("REFRESH");
-    
-    chrome.runtime.sendMessage("getToken", function(accesstoken) {
-        
-        console.log("Response Received at "+(new Date().getTime()));
-        
-        if (accesstoken) {
-            clearInterval(refresh);
-            
-            console.log("Api Key: " + accesstoken);
-            
-            // Returns array of status messages from user
-            function getStatusMessages(userId, callback) {
-                console.log("GetStatusMessages");
-                var messages = new Array();
-                
-                $.ajax({
-                    url: 'https://graph.facebook.com/' + userId + '/feed'
-                }).done(function(data) {
-                    
-                });
-                
-                
-                
-                
-                FB.api(
-                    "/" + userId + "/feed",
-                    {
-                              "access_token": accesstoken,
-                        "filter": "app_2915120374"
-                    },
-                    function (response) {
-                      if (response && !response.error) {
-                        for (var i = 0; i < response['data'].length; i++) {
-                            var post = response['data'][i];
-                            if (post['message'])
-                                messages.push(post['message']);
-                        }
-                        callback(messages);
-                      } else {
-                          console.error(reponse.error);
-                      }
-                    }
-                )
-            }
+	        $.ajax({
+	            type: 'POST',
+	            url: endPoint,
+	            data: {
+	                apikey: API_KEY,
+	                text: statuses
+	            },
+	            dataType: 'JSON',
+	            async: false
+	        }).done(function(JSONdata) {
+	  					user['sentiment'] = JSONdata.aggregate.sentiment;
+	            user['score'] = JSONdata.aggregate.score;
+	        });
+	    });
 
+	    return users;
+	};
 
-            //
-            // Returns array of logged in friend ids
-            function getFriendIds(callback) {
-                var friendIds = new Array();
-              var friendTags = document.getElementsByClassName("fbChatSidebarBody")[0].getElementsByTagName("li");
-
-                $.each(friendTags, function(key, value) {
-                    friendIds.push(value.getAttribute('data-id'));
-                });
-
-                if (typeof callback === 'function') callback(friendIds);
-                return friendIds;
-            }
-
-
-            //
-            // Returns example: [{id: 1000325398472, statuses: ["i like cats", "i like dogs"]]] 
-            function getFriendIdsAndStatusMessages(callback) {
-                var allFriendsAndStatuses = new Array();
-
-                getFriendIds().forEach(function(friendId) {
-                    var statuses = getStatusMessages(friendId);
-                    allFriendsAndStatuses.push({id: friendId, statuses: statuses});
-                });
-
-                console.log(allFriendsAndStatuses);
-
-                callback(allFriendsAndStatuses);
-            }
-
-
-            var API_KEY = 'dcabc379-7d01-4357-bc05-3365882df4ba';
-            var endPoint = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1';
-
-            function getSentiment(users,callback) {
-                users.forEach(function(user, index, users) {
-                    /* We join all of the user's status updates and pass it as the text in the post request to our endpoint: */
-                    var statuses = user.statuses.join(' ')
-
-                    $.ajax({
-                        type: 'POST',
-                        url: endPoint,
-                        data: {
-                            apikey: API_KEY,
-                            text: statuses
-                        },
-                        dataType: json,
-                        async: false
-                    }).done(function(JSONdata) {
-                        /* Adding sentiment and score properties, obtained from POST response, to our users array: */
-                        user['sentiment'] = JSONdata.aggregate.sentiment;
-                        user['score'] = JSONdata.aggregate.score;
-                    });
-                });
-
-                callback(users);
-            };
-
-            NEUTRAL_PNG = 'images/neutral.png';
-            NEGATIVE_PNG = 'images/negative.png';
-            POSITIVE_PNG = 'images/positive.png';
-
-            var friendIdsAndStatuses = getFriendIdsAndStatusMessages(function(friendCallback) {
-
-                var users = getSentiment(friendCallback, function(sentimentCallback) {
-                    console.log(sentimentCallback);
-
-                    for (var i = 0; i < sentimentCallback.length; i++) {
-                        var user = sentimentCallback[i];
-                        //check if user is present in chat messenger
-                        switch(user.sentiment) {
-                            case "positive":
-                                sentimentImage = POSITIVE_PNG;
-                                break;
-                            case "neutral":
-                                sentimentImage = NEUTRAL_PNG;
-                                break;
-                            case "negative":
-                                sentimentImage = NEGATIVE_PNG;
-                                break;
-                            default:
-                                sentimentImage = "";
-                        }
-                        console.log(user.id);
-                        theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
-                        console.log(theSelector);
-                        if(sentimentImage != ""){
-                            HTMLToPrepend = '<span style="width:5px; padding-right:4px"><img src="'+ sentimentImage +'" />tt</span>';
-                            response = $(theSelector).prepend(HTMLToPrepend);
-                            console.log(response);
-                        }
-                    }
-                });
-            });
-        }
-    });
-};
+	NEUTRAL_PNG = 'images/neutral.png';
+	NEGATIVE_PNG = 'images/negative.png';
+	POSITIVE_PNG = 'images/positive.png';
+	
+	sentiments = getSentiment(userData);
+	
+	for (var i = 0; i < sentiments.length; i++) {
+	    var user = sentiments[i];
+	    switch(user.sentiment) {
+	        case "positive":
+	            sentimentImage = POSITIVE_PNG;
+	            break;
+	        case "neutral":
+	            sentimentImage = NEUTRAL_PNG;
+	            break;
+	        case "negative":
+	            sentimentImage = NEGATIVE_PNG;
+	            break;
+	        default:
+	            sentimentImage = "";
+	    }
+	    console.log(user.id);
+	    theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
+	    console.log(theSelector);
+	    if(sentimentImage != ""){
+	        HTMLToPrepend = '<span style="width:5px; padding-right:4px"><img src="'+ sentimentImage +'" />tt</span>';
+	        response = $(theSelector).prepend(HTMLToPrepend);
+	        console.log(response);
+	    }
+	}
+	
+});
