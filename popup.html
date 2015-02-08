@@ -50,6 +50,7 @@
           
           .usertrend:focus {
               outline: none;
+							margin-bottom: 5px;
           }
           
           .usertrend > img {
@@ -81,6 +82,10 @@
               display: block;
               padding-right: 20px;
           }
+					
+					.clear {
+						clear: both;
+					}
       </style>
   </head>
   <body>
@@ -89,11 +94,9 @@
             <div id="sentiment" class="positive"></div>
             <p>Your friends are currently<br /><strong>Positive!</strong></p>
           </div>
-          <a href="#" class="usertrend">
-            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c0.0.32.32/p32x32/10676228_1383715691941338_4549767760473455557_n.jpg?oh=493e895b684dbd1f39e7429b06b33e88&oe=555E0C2B&__gda__=1432019716_78d15981039fe20fac9b66535abf20c7" width="32" height="32" />
-              <span class="content"><strong>Channing Tater</strong> has been posting about catnip.</span>
-              <div id="user_sentiment" class="positive"></div>
-          </a>
+					<div class="usertrends">
+          	
+					</div>
       </div>
   </body>
 </html>
