@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var userData = [
 		{ 	//Adi
-			'id': '10202213762645938',
+			'id': '1245885826',
 			'statuses': [ "I love to eat Indian food and code for hours.", 
 			"I hate it if I eat too much because then I would want to go to sleep.",
 			"Hackathon 2005 time, woohoo!"]
@@ -26,7 +26,7 @@ $(document).ready(function() {
 	var API_KEY = 'dcabc379-7d01-4357-bc05-3365882df4ba';
 	var endPoint = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1';
 
-	function getSentiment(users,callback) {
+	function getSentiment(users) {
 	    users.forEach(function(user, index, users) {
 	        var statuses = user.statuses.join(' ')
 
@@ -56,6 +56,8 @@ $(document).ready(function() {
 	sentiments = getSentiment(userData);
 	
 	var refreshIcons = setInterval(function() {
+		console.log("refreshing icons");
+		
 		$(".moodlet").remove();
 
 		for (var i = 0; i < sentiments.length; i++) {
@@ -74,14 +76,10 @@ $(document).ready(function() {
 			    default:
 			        sentimentImage = "";
 			}
-			console.log(user.id);
 			theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
-			console.log(theSelector);
-			console.log("sentiment is " + chrome.extension.getURL(sentimentImage));
 			if(sentimentImage != ""){
 				HTMLToPrepend = '<span class="moodlet"><img src="'+ chrome.extension.getURL(sentimentImage) +'" width="15" height="15" /></span>';
 				response = $(theSelector).prepend(HTMLToPrepend);
-				console.log(response);
 			}
 		}
 	}, 1000);
