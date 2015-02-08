@@ -44,7 +44,8 @@ $(document).ready(function() {
 	            user['score'] = JSONdata.aggregate.score;
 	        });
 	    });
-
+			
+			console.log(users);
 	    return users;
 	};
 
@@ -54,29 +55,35 @@ $(document).ready(function() {
 	
 	sentiments = getSentiment(userData);
 	
-	for (var i = 0; i < sentiments.length; i++) {
-	    var user = sentiments[i];
-	    switch(user.sentiment) {
-	        case "positive":
-	            sentimentImage = POSITIVE_PNG;
-	            break;
-	        case "neutral":
-	            sentimentImage = NEUTRAL_PNG;
-	            break;
-	        case "negative":
-	            sentimentImage = NEGATIVE_PNG;
-	            break;
-	        default:
-	            sentimentImage = "";
-	    }
-	    console.log(user.id);
-	    theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
-	    console.log(theSelector);
-	    if(sentimentImage != ""){
-	        HTMLToPrepend = '<span style="width:5px; padding-right:4px"><img src="'+ sentimentImage +'" />tt</span>';
-	        response = $(theSelector).prepend(HTMLToPrepend);
-	        console.log(response);
-	    }
-	}
+	var refreshIcons = setInterval(function() {
+		$(".moodlet").remove();
+
+		for (var i = 0; i < sentiments.length; i++) {
+			var user = sentiments[i];
+			//check if user is present in chat messenger
+			switch(user.sentiment) {
+			    case "positive":
+			        sentimentImage = POSITIVE_PNG;
+			        break;
+			    case "neutral":
+			        sentimentImage = NEUTRAL_PNG;
+			        break;
+			    case "negative":
+			        sentimentImage = NEGATIVE_PNG;
+			        break;
+			    default:
+			        sentimentImage = "";
+			}
+			console.log(user.id);
+			theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
+			console.log(theSelector);
+			console.log("sentiment is " + chrome.extension.getURL(sentimentImage));
+			if(sentimentImage != ""){
+				HTMLToPrepend = '<span class="moodlet"><img src="'+ chrome.extension.getURL(sentimentImage) +'" width="15" height="15" /></span>';
+				response = $(theSelector).prepend(HTMLToPrepend);
+				console.log(response);
+			}
+		}
+	}, 1000);
 	
 });

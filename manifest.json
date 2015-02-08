@@ -24,6 +24,11 @@
             "js": ["jquery.js", "moodring.js"]
         }
     ],
+
+    "web_accessible_resources": [
+        "images/*"
+    ],
+        
         
     "permissions": [
         "declarativeContent",
