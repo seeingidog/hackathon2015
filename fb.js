@@ -3,9 +3,9 @@ function loginfacebook(callback) {
         'url' : "https://www.facebook.com/dialog/oauth?"
                 + "display=popup&"
                 + "app_id=387276881452880&"
-                + "redirect_uri=http://moodring.wizkidweb.com/index.php"
-                // + "scope=scopestuff"
-                + "&response_type=token",
+                + "redirect_uri=http://moodring.wizkidweb.com/index.php&"
+                + "scope=read_stream&"
+                + "response_type=token",
         'width': 580,
         'height': 400
     }, function(popupWindow) {
