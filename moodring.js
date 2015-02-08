@@ -29,8 +29,6 @@ function runMoodRing() {
                 });
                 
                 
-                
-                
                 FB.api(
                     "/" + userId + "/feed",
                     {
@@ -150,3 +148,17 @@ function runMoodRing() {
         }
     });
 };
+
+setTimeout(function() {
+    console.log(getDOMFeedContent());
+}, 5000);
+
+function getDOMFeedContent() {
+    var data = [];
+    if ($("#fbProfileCover").length) { // If profile cover exists
+        $(".userContentWrapper").each(function(index, el) {
+            var content = $(".userContent", this).html();
+            data.push(content);
+        });
+    }
+}
