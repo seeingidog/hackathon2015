@@ -3,7 +3,7 @@
     
     "name": "MoodRing",
     "description": "This extension shows a small moodlet graphic next to Facebook users.",
-    "version": "1.0",
+    "version": "1.1",
     
     "background": {
         "page": "background.html"
@@ -21,7 +21,7 @@
         {
             "matches": ["*://*.facebook.com/*"],
             "css": ["style.css"],
-            "js": ["jquery.js", "moodring.js", "fb_graph.js"]
+            "js": ["jquery.js", "moodring.js"]
         }
     ],
         

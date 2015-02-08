@@ -15,12 +15,22 @@ function runMoodRing() {
         if (accesstoken) {
             clearInterval(refresh);
             
-            console.log("Api Key: " + accestoken);
+            console.log("Api Key: " + accesstoken);
             
             // Returns array of status messages from user
             function getStatusMessages(userId, callback) {
                 console.log("GetStatusMessages");
                 var messages = new Array();
+                
+                $.ajax({
+                    url: 'https://graph.facebook.com/' + userId + '/feed'
+                }).done(function(data) {
+                    
+                });
+                
+                
+                
+                
                 FB.api(
                     "/" + userId + "/feed",
                     {
@@ -53,7 +63,8 @@ function runMoodRing() {
                     friendIds.push(value.getAttribute('data-id'));
                 });
 
-                callback(friendIds);
+                if (typeof callback === 'function') callback(friendIds);
+                return friendIds;
             }
 
 
@@ -139,4 +150,3 @@ function runMoodRing() {
         }
     });
 };
-
