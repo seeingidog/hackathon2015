@@ -1,10 +1,21 @@
 // Mood Ring Code
 
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
 $(document).ready(function() {
 
-	NEUTRAL_PNG = 'images/neutral.png';
-	NEGATIVE_PNG = 'images/negative.png';
-	POSITIVE_PNG = 'images/positive.png';
+	NEUTRAL_PNG = 'images/neutral.jpg';
+	NEGATIVE_PNG = 'images/negative.jpg';
+	POSITIVE_PNG = 'images/positive.jpg';
+
+
 
 	var users = [
 		{ 
@@ -13,7 +24,7 @@ $(document).ready(function() {
 			'sentiment': "neutral"
 		},
 		{ 
-			'id': '345454545', 
+			'id': '25706538', 
 			'statuses': [ "i love stuff", "i hate stuff" ],
 			'sentiment': "neutral"
 		},
@@ -39,32 +50,38 @@ $(document).ready(function() {
 	console.log(users);
 	*/
 
+
 	var userIds = ["1402854887", "100000464907991","56456456546"];
-	
-	$.each(users, function( index, user ) {
-		//check if user is present in chat messenger
-		switch(user.sentiment) {
-		    case "positive":
-		        sentimentImage = POSITIVE_PNG;
-		        break;
-		    case "neutral":
-		        sentimentImage = NEUTRAL_PNG;
-		        break;
-		    case "negative":
-		        sentimentImage = NEGATIVE_PNG;
-		        break;
-		    default:
-		        sentimentImage = "";
+
+	var refreshIcons = setInterval(function() {
+		$(".moodlet").remove();
+
+		for (var i = 0; i < users.length; i++) {
+			var user = users[i];
+			//check if user is present in chat messenger
+			switch(user.sentiment) {
+			    case "positive":
+			        sentimentImage = POSITIVE_PNG;
+			        break;
+			    case "neutral":
+			        sentimentImage = NEUTRAL_PNG;
+			        break;
+			    case "negative":
+			        sentimentImage = NEGATIVE_PNG;
+			        break;
+			    default:
+			        sentimentImage = "";
+			}
+			console.log(user.id);
+			theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
+			console.log(theSelector);
+			console.log("sentiment is " + chrome.extension.getURL(sentimentImage));
+			if(sentimentImage != ""){
+				HTMLToPrepend = '<span class="moodlet"><img src="'+ chrome.extension.getURL(sentimentImage) +'" width="15" height="15" /></span>';
+				response = $(theSelector).prepend(HTMLToPrepend);
+				console.log(response);
+			}
 		}
-		console.log(user.id);
-		theSelector = "li[data-id='" + user.id + "']" + "> a > div > div._5bon";
-		console.log(theSelector);
-		if(sentimentImage != ""){
-			HTMLToPrepend = '<span style="width:5px; padding-right:4px"><img src="'+ sentimentImage +'" />tt</span>';
-			response = $(theSelector).prepend(HTMLToPrepend);
-			console.log(response);
-		}
-		
-	});
+	}, 1000);
 	
 });

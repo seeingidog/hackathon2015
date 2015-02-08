@@ -28,7 +28,11 @@
         "tabs",
         "identity"
     ],
-    
+
+    "web_accessible_resources": [
+        "images/*"
+    ],
+        
     "icons" : {
         "19" : "icon.png"
     }
