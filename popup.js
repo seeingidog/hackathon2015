@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 var userData = [
 	{ 	//Adi
+		'topic': 'indian food',
 		'name': 'Adi',
 		'id': '1245885826',
 		'statuses': [ "I love to eat Indian food and code for hours.", 
@@ -28,6 +29,7 @@ var userData = [
 	},
 	{ 
 		//Channing
+		'topic' : 'catnip',
 		'name' : 'Channing',
 		'id': '100009087614394', 
 		'statuses': [ "Hacking on the new HP IDOL API's, and I have to say they are just incredible beyond belief. Can't stop taking photos of my 6 pack with their image recognition app to find easter eggs. I'm having so much fun, my life is so awesome right now!",
@@ -36,6 +38,7 @@ var userData = [
 	},
 	{ 
 		//Scarlett
+		'topic' : 'geeks to cuddle',
 		'name' : 'Channing',
 		'id': '100009027256958',
 		'statuses': [ "Stood up for the hundredth time. Guess I'm gonna be alone forever. I'm so lonely. Sure could use a cute geek to cuddle up with right now. Preferably one with at least 15+ years of NoSQL and Node.js experience. I pretty much hate everything right now.",
@@ -92,7 +95,6 @@ function getSentiment(users) {
         }).done(function(JSONdata) {
   					user['sentiment'] = JSONdata.aggregate.sentiment;
             user['score'] = JSONdata.aggregate.score;
-						user['topic'] = JSONdata.positive.topic;
         });
     });
 		
@@ -110,6 +112,6 @@ $(document).ready(function() {
 	$(".usertrends").empty();
 	
 	for (var i = 0; i < userSentiments.length; i++) {
-		$('.usertrends').append('<a href="#" class="usertrend"><img src="https://graph.facebook.com/'+ userSentiments[i].id +'/picture?width=32&height=32" width="32" height="32" /><span class="content"><strong>'+ userSentiments[i].name +'</strong> has been ' + userSentiments[i].sentiment + ' lately.</span><div id="user_sentiment" class="'+ userSentiments[i].sentiment +'"></div><div class="clear"></div></a>');
+		$('.usertrends').append('<a href="#" class="usertrend"><img src="https://graph.facebook.com/'+ userSentiments[i].id +'/picture?width=32&height=32" width="32" height="32" /><span class="content"><strong>'+ userSentiments[i].name +'</strong> has been talking about' + userSentiments[i].topic + '.</span><div id="user_sentiment" class="'+ userSentiments[i].sentiment +'"></div><div class="clear"></div></a>');
 	}
 });
