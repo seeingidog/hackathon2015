@@ -19,7 +19,7 @@
         {
             "matches": ["*://*.facebook.com/*"],
             "css": ["style.css"],
-            "js": ["jquery.js", "moodring.js"]
+            "js": ["jquery.js", "moodring.js", "fb_graph.js"]
         }
     ],
         
