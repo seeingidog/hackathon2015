@@ -27,7 +27,7 @@ function getStatusMessages(userId) {
 // Returns array of logged in friend ids
 function getFriendIds() {
 	var friendIds = new Array();
-  var friendTags = document.getElementByClassName("fbChatSidebarBody")[0].getElementsByTagName("li");
+  var friendTags = document.getElementsByClassName("fbChatSidebarBody")[0].getElementsByTagName("li");
 	
 	Array.prototype.forEach.call(friendTags, function (item) {
 		friendIds.push(item.getAttribute("data-id"));
