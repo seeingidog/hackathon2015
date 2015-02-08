@@ -3,7 +3,6 @@
 <html>
 	<head>
 		<!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css"> -->
-		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
 		<header>Hackathon Data</header>
@@ -12,6 +11,34 @@
 			
 		</p>
 		<script src='https://code.jquery.com/jquery-2.1.3.js'></script>		
-		<script src='hpIdol.js'></script>
+		<script src='../fb_graph.js'></script>
+		
+		<script>
+		var users = [
+			{ 
+				'id': '343434435',
+				'statuses': [ "I love to eat Indian food and code for hours.", "I hate it if I eat too much because then I would want to go to sleep." ]
+			},
+			{ 
+				'id': '345454545', 
+				'statuses': [ "i love stuff", "i hate stuff" ] 
+			},
+			{ 
+				'id': '345236556',
+				'statuses': [ "i pooped", "i showered" ] 
+			},	
+			{ 
+				'id': '348254587',
+				'statuses': [ "In my last job, my French senior developer frequently complained about everything in America." ]
+			},
+			{ 
+				'id': '234454545',
+				'statuses': [ "Focus on creating unique & engaging apps on any platform. We take care of everything else your app needs, from the core of your app to analytics and push notifications." ] 
+			}
+		];
+		
+		console.log(getSentiment(users));
+		
+		</script>
 	</body>
 </html>

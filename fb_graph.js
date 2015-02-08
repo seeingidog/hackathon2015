@@ -38,14 +38,35 @@ function getFriendIds() {
 
 
 //
-// Returns example: [1000325398472, ["i like cats", "i like dogs"]] 
+// Returns example: [{id: 1000325398472, statuses: ["i like cats", "i like dogs"]]] 
 function getFriendIdsAndStatusMessages() {
 	var allFriendsAndStatuses = new Array();
 	
 	getFriendIds().forEach(function(friendId) {
 		var statuses = getStatusMessages(friendId);
-		allFriendsAndStatuses.push([friendId, statuses]);
+		allFriendsAndStatuses.push({id: friendId, statuses: statuses});
   });
 	
 	return allFriendsAndStatuses;
 }
+
+
+var API_KEY = 'dcabc379-7d01-4357-bc05-3365882df4ba';
+var endPoint = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1';
+
+function getSentiment(users) {
+	users.forEach(function(user, index, users) {
+		/* We join all of the user's status updates and pass it as the text in the post request to our endpoint: */
+		var statuses = user.statuses.join(' ');
+		$.post(endPoint, { apikey: API_KEY, text: statuses }, function(JSONdata) {
+			/* Adding sentiment and score properties, obtained from POST response, to our users array: */
+			user['sentiment'] = JSONdata.aggregate.sentiment;
+			user['score'] = JSONdata.aggregate.score;
+		});
+	});
+
+	/*  users is now returned with 'sentiment' and 'score' properties */
+	return users;
+};
+
+
