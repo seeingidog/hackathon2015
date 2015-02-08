@@ -49,14 +49,14 @@ var allStatuses = [ "I love to eat Indian food and code for hours.",
 		 "Discovered that catnip is not just for cats. Sprinkled a bit on my counter and felt absolutely giddy and wonderful. Started dancing and gyrating around my mansion. Can life get any more amazing??",
 		 "Just scored 2 hot dogs for the price of 1 at 7eleven. I feel great. What a beautiful and bountiful world we all live in. As a wise man once said, I'm loving it!", "Stood up for the hundredth time. Guess I'm gonna be alone forever. I'm so lonely. Sure could use a cute geek to cuddle up with right now. Preferably one with at least 15+ years of NoSQL and Node.js experience. I pretty much hate everything right now.",
 		"So apparently there are health and safety laws against filling your pool with champagne. Health Inspector totally screwed me over today. I'm just so depressed and angry over this. So pissed off!",
-		"Being beautiful is hard work, guys! Had the worst, most terrible day sorting through hundred of Tinder requests today. FML." ]
+		"Being beautiful is hard work, guys! Had the worst, most terrible day sorting through hundred of Tinder requests today. FML." 
 ];
 
 var API_KEY = 'dcabc379-7d01-4357-bc05-3365882df4ba';
 var endPoint = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1';
 
 function getAggregateSentiment(users) {
-  var statuses = user.join(' ')
+  var statuses = users.join(' ')
 
   $.ajax({
       type: 'POST',
@@ -68,7 +68,7 @@ function getAggregateSentiment(users) {
       dataType: 'JSON',
       async: false
   }).done(function(JSONdata) {
-			return JSONdata.aggregate;
+			return JSONdata;
   });
 
 };
@@ -97,8 +97,15 @@ function getSentiment(users) {
     return users;
 };
 
-var overallSentiment = getAggregateSentiment(allStatuses);
-var userSentiments = getSentiment(userData);
 
-console.log(overallSentiment);
-console.log(userSentiments);
+$(document).ready(function() {
+	var overallSentiment = getAggregateSentiment(allStatuses);
+	var userSentiments = getSentiment(userData);
+
+	console.log(overallSentiment);
+	
+	$('#sentiment').attr('class', overallSentiment[0].sentiment);
+	for (var i = 0; i < userSentiments.length; i++) {
+		$('.container').append('<a href="#" class="usertrend"><img src="https://graph.facebook.com/'+ userSentiments[i].id +'/picture?width=32&height=32" width="32" height="32" /><span class="content"><strong>'+ userSentiments[i].name +'</strong> has been ' + userSentiments[i].sentiment + ' lately about catnip.</span><div id="user_sentiment" class="'+ userSentiments[i].sentiment +'"></div></a>');
+	}
+});
