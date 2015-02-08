@@ -11,7 +11,7 @@ function getStatusMessages(userId) {
 	    function (response) {
 	      if (response && !response.error) {
 		    response['data'].forEach(function(post) {
-			    if post['message'] {
+			    if (post['message']) {
 			      messages.push(post['message']);
 			    }
 		  	});
