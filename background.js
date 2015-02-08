@@ -21,7 +21,8 @@ chrome.runtime.onInstalled.addListener(function() {
 var successURL = 'http://www.wizkidweb.com';
 
 function loginfacebook(callback) {
-    chrome.windows.create({
+    callback();
+    /*chrome.windows.create({
         'url' : "https://www.facebook.com/dialog/oauth?"
                 + "display=popup&"
                 + "app_id=387276881452880&"
@@ -67,5 +68,5 @@ function loginfacebook(callback) {
                 });
             });
         });
-    })
+    })*/
 }

@@ -5,8 +5,95 @@
       <script type="text/javascript" src="background.js"></script>
       <script type="text/javascript" src="popup.js"></script>
       <script type="text/javascript" src="fb.js"></script>
+      <style type="text/css">
+          .container {
+              width: 250px;
+          }
+          
+          #aggregate {
+              font-size: 14px;
+              margin-bottom: 10px;
+          }
+          
+          #aggregate.positive {
+              color: #00a30f;
+          }
+          
+          #aggregate > p {
+              padding: 14px 0 0 66px;
+          }
+          
+          #sentiment {
+              float: left;
+              width: 56px;
+              height: 56px;
+          }
+          
+          #sentiment.positive {
+              background: url(design/positive_large.png) no-repeat top left;
+          }
+          
+          #sentiment.negative {
+              background: url(design/negative_large.png) no-repeat top left;
+          }
+          
+          #sentiment.neutral {
+              background: url(design/neutral_large.png) no-repeat top left;
+          }
+          
+          .usertrend {
+              display: block;
+              text-decoration: none;
+              color: #000;
+              position: relative;
+          }
+          
+          .usertrend:focus {
+              outline: none;
+          }
+          
+          .usertrend > img {
+              float: left;
+              margin-right: 10px;
+          }
+          
+          #user_sentiment {
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 15px;
+              height: 15px;
+          }
+          
+          #user_sentiment.positive {
+              background: url(design/positive.png) no-repeat top left;
+          }
+          
+          #user_sentiment.negative {
+              background: url(design/negative.png) no-repeat top left;
+          }
+          
+          #user_sentiment.neutral {
+              background: url(design/neutral.png) no-repeat top left;
+          }
+          
+          .usertrend .content {
+              display: block;
+              padding-right: 20px;
+          }
+      </style>
   </head>
   <body>
-      <iframe id="iframe"></iframe>
+      <div class="container">
+          <div id="aggregate" class="positive">
+            <div id="sentiment" class="positive"></div>
+            <p>Your friends are currently<br /><strong>Positive!</strong></p>
+          </div>
+          <a href="#" class="usertrend">
+            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c0.0.32.32/p32x32/10676228_1383715691941338_4549767760473455557_n.jpg?oh=493e895b684dbd1f39e7429b06b33e88&oe=555E0C2B&__gda__=1432019716_78d15981039fe20fac9b66535abf20c7" width="32" height="32" />
+              <span class="content"><strong>Channing Tater</strong> has been posting about catnip.</span>
+              <div id="user_sentiment" class="positive"></div>
+          </a>
+      </div>
   </body>
 </html>
