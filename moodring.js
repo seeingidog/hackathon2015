@@ -33,7 +33,11 @@ $(document).ready(function() {
 			'sentiment': "negative"
 		}
 	];
-
+	
+	/*
+	var users = getSentiment(getFriendIdsAndStatusMessages);
+	console.log(users);
+	*/
 
 	var userIds = ["1402854887", "100000464907991","56456456546"];
 	
@@ -61,8 +65,6 @@ $(document).ready(function() {
 			console.log(response);
 		}
 		
-		
-		//$("[]=").append();
 	});
 	
 });
